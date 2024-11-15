@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 Wallet</title>
+    <link rel="stylesheet" href="styles.css">  <!-- Link tới tệp CSS nếu có -->
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Your Web3 Wallet</h1>
+        
+        <!-- Form để tạo ví mới -->
+        <div class="create-wallet">
+            <h2>Create a New Wallet</h2>
+            <form action="/create_wallet" method="POST">
+                <button type="submit">Create Wallet</button>
+            </form>
+        </div>
+
+        <!-- Form để đăng nhập vào ví đã có -->
+        <div class="login-wallet">
+            <h2>Login to Your Wallet</h2>
+            <form action="/login_wallet" method="POST">                
+                <label for="private_key">Private Key:</label>
+                <input type="password" id="private_key" name="private_key" required>
+                
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <!-- Hiển thị các thông báo (ví dụ: thành công, lỗi) -->
+        <div id="flash-messages">
+            <!-- Các thông báo sẽ được thêm vào đây bằng JavaScript hoặc Flask -->
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>  <!-- Link tới tệp JavaScript nếu có -->
+</body>
+</html>
