@@ -13,7 +13,7 @@
     <div class="container mx-auto p-6">
         <!-- Header Section -->
         <header class="flex justify-between items-center mb-6">
-            <div class="text-2xl font-bold text-indigo-600">Crypto Wallet</div>
+            <div class="text-2xl font-bold text-indigo-600">Crypto Wallet Receive</div>
             <div class="flex space-x-4">
                 <button class="p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700"><i
                         class="fa fa-cog"></i></button>
@@ -29,20 +29,21 @@
                 <div class="bg-gray-200 p-4 rounded-lg text-gray-800 w-2/3">
                     <div class="flex items-center space-x-2">
                         <img src="https://www.gmgn.app/logos/evm.svg" alt="EVM Logo" class="w-6 h-6">
-                        <span class="text-sm">{{ account_data.address }}</span>
+                        <span class="text-sm">{{ account.address }}</span>
                     </div>
                 </div>
-                <button id="generateQR" class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-                    Generate QR
-                </button>
-            </div>
-
-            <!-- QR Code Modal -->
-            <div id="qrModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold text-gray-800">QR Code</h3>
-                    <img id="qrCodeImage" src="" alt="QR Code" class="mt-4">
-                    <button class="mt-4 bg-red-500 text-white p-2 rounded-lg" onclick="closeQRModal()">Close</button>
+                <div>
+                    <img src="" alt="" id="qrcode1">
+                    QR Code address here
+                    <script>
+                        fetch('/get_account_address')
+                        .then(response => response.json())
+                        .then(data => {
+                            const walletAddress = data;
+                            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${walletAddress}&size=200x200`;
+                            document.getElementById('qrcode1').src = qrCodeUrl;
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -73,23 +74,6 @@
     </div>
 
     <script>
-        document.getElementById('generateQR').addEventListener('click', function () {
-            fetch('/getAccountData')
-                .then(response => response.json())
-                .then(data => {
-                    const walletAddress = data.address;
-                    document.getElementById('generateQR').addEventListener('click', function () {
-                        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${walletAddress}&size=200x200`;
-                        document.getElementById('qrCodeImage').src = qrCodeUrl;
-                        document.getElementById('qrModal').classList.remove('hidden');
-                    });
-                });
-        });
-
-        function closeQRModal() {
-            document.getElementById('qrModal').classList.add('hidden');
-        }
-
         document.getElementById('requestForm').addEventListener('submit', function (event) {
             event.preventDefault();
             const recipientAddress = document.getElementById('recipientAddress').value;

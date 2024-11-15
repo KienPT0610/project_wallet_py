@@ -10,7 +10,9 @@ def create_app():
     
     app.add_url_rule('/account/<address>', 'account', account)
     app.add_url_rule('/send', 'send', send)
-    
+    app.add_url_rule('/receive', 'receive', receive)
     # app.add_url_rule('/logout', 'logout', logout)
+
+    app.add_url_rule('/get_account_address', 'get-account-address', get_account_address)
 
     return app
