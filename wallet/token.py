@@ -39,14 +39,10 @@ class Token:
             spender = self.address
         return self.contract.functions.allowance(owner, spender).call()
     
-    def get_send_transaction(self, owner=None):
-        if owner is None:
-            owner = self.address
-        return self.contract.functions.getSendTransactions(owner).call()
+    def get_send_transactions(self):
+        return self.contract.functions.getSendTransactions(self.default_account).call()
     
-    def get_receive_transaction(self, owner=None):
-        if owner is None:
-            owner = self.address
-        return self.contract.functions.getReceiveTransactions(owner).call()
+    def get_receive_transactions(self):
+        return self.contract.functions.getReceiveTransactions(self.default_account).call()
     
 

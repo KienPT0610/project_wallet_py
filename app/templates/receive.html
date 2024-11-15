@@ -13,13 +13,12 @@
     <div class="container mx-auto p-6">
         <!-- Header Section -->
         <header class="flex justify-between items-center mb-6">
-            <div class="text-2xl font-bold text-indigo-600">Crypto Wallet Receive</div>
             <div class="flex space-x-4">
-                <button class="p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700"><i
-                        class="fa fa-cog"></i></button>
-                <button class="p-2 bg-green-600 text-white rounded-full hover:bg-green-700"><i
-                        class="fa fa-user"></i></button>
+                <button class="text-gray-600" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i> Go back
+                </button>
             </div>
+            <div class="text-2xl font-bold text-indigo-600">Crypto Wallet Receive</div>
         </header>
 
         <!-- Wallet Address and QR Code Section -->
@@ -37,12 +36,12 @@
                     QR Code address here
                     <script>
                         fetch('/get_account_address')
-                        .then(response => response.json())
-                        .then(data => {
-                            const walletAddress = data;
-                            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${walletAddress}&size=200x200`;
-                            document.getElementById('qrcode1').src = qrCodeUrl;
-                        });
+                            .then(response => response.json())
+                            .then(data => {
+                                const walletAddress = data;
+                                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${walletAddress}&size=200x200`;
+                                document.getElementById('qrcode1').src = qrCodeUrl;
+                            });
                     </script>
                 </div>
             </div>
