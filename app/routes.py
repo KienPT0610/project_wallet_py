@@ -33,3 +33,8 @@ def send():
 
 def receive():
     return render_template('receive.html', account=wallet.account)
+
+def transactions():
+    send_transactions = wallet.token.get_send_transactions()
+    receive_transactions = wallet.token.get_receive_transactions()
+    return render_template('transactions.html', send_transactions=send_transactions, receive_transactions=receive_transactions)

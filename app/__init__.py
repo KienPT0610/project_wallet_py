@@ -14,5 +14,6 @@ def create_app():
     # app.add_url_rule('/logout', 'logout', logout)
 
     app.add_url_rule('/get_account_address', 'get-account-address', get_account_address)
+    app.add_url_rule('/transactions', 'transactions', transactions)
 
     return app
