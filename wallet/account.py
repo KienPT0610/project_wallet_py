@@ -17,6 +17,13 @@ class Account:
     def private_key(self):
         return self.account.key.hex()
     
+    @property
+    def balance(self):
+        return self._balance
+    
+    def set_balance(self, balance):
+        self._balance = balance
+
     def sign_transaction(self, transaction):
         return self.account.sign_transaction(transaction, self.private_key)
     
