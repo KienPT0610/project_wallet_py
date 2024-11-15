@@ -37,4 +37,18 @@ def receive():
 def transactions():
     send_transactions = wallet.token.get_send_transactions()
     receive_transactions = wallet.token.get_receive_transactions()
-    return render_template('transactions.html', send_transactions=send_transactions, receive_transactions=receive_transactions)
+    return render_template(
+        'transactions.html', 
+        send_transactions=send_transactions, 
+        receive_transactions=receive_transactions
+    )
+
+def send_token():
+    try:
+        to = request.form.get('to')
+        amount = request.form.get('amount')
+        memo = request.form.get('memo')
+        wallet.send_token(to, amount, memo)
+        return redirect(url_for('transactions'))
+    except Exception as error:
+        return jsonify({"error": str(error)})

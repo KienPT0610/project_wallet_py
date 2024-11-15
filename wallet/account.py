@@ -3,11 +3,11 @@ from config.settings import API_URL
 
 class Account:
     def __init__(self, private_key=None):
-        provider = Provider(API_URL)
+        self.provider = Provider(API_URL)
         if private_key is None:
-            self.account = provider.create_account()
+            self.account = self.provider.create_account()
         else:
-            self.account = provider.get_account(private_key)
+            self.account = self.provider.get_account(private_key)
 
     @property
     def address(self):
@@ -24,6 +24,9 @@ class Account:
     def set_balance(self, balance):
         self._balance = balance
 
-    def sign_transaction(self, transaction):
-        return self.account.sign_transaction(transaction, self.private_key)
+    def sign_transaction(self, tx):
+        signed_tx = self.provider.get_web3().eth.account.sign_transaction(tx, self.private_key)
+        tx_hash = self.provider.get_web3().eth.send_raw_transaction(signed_tx.raw_transaction)
+        return tx_hash
+    
     

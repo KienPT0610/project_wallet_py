@@ -113,7 +113,7 @@
 
             const input = document.createElement('input');
             input.type = 'hidden';
-            input.name = 'address';
+            input.name = 'to';
             input.value = address;
 
             const input2 = document.createElement('input');
@@ -128,7 +128,7 @@
 
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/send';
+            form.action = '/send_token';
             form.appendChild(input);
             form.appendChild(input2);
             form.appendChild(input3);
