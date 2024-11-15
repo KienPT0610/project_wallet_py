@@ -21,5 +21,15 @@ def account(address):
     account = wallet.account
     return render_template('wallet.html', account=account)
 
+def get_account_address():
+    try:
+        account_address = wallet.account.address
+        return jsonify(account_address)
+    except Exception as error:
+        return jsonify({"error": str(error)})
+
 def send():
     return render_template('send.html', account=wallet.account)
+
+def receive():
+    return render_template('receive.html', account=wallet.account)
