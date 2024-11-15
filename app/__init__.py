@@ -16,4 +16,6 @@ def create_app():
     app.add_url_rule('/get_account_address', 'get-account-address', get_account_address)
     app.add_url_rule('/transactions', 'transactions', transactions)
 
+    app.add_url_rule('/send_token', 'send-token', send_token, methods=['POST'])
+
     return app

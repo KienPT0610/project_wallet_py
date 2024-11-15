@@ -28,4 +28,7 @@ class Wallet:
             self.account.set_balance(balance=balance)
         else:
             print("Please login first")
-    
+
+    def send_token(self, to, amount, memo):
+        tx = self.token.create_transaction_send_token(to, amount, memo)
+        return self.account.sign_transaction(tx)
