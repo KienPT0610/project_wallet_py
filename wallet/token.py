@@ -29,7 +29,8 @@ class Token:
     def balance_of(self, account=None):
         if account is None:
             account = self.default_account
-        return self.contract.functions.balanceOf(account).call()
+        balance = self.contract.functions.balanceOf(account).call()
+        return self.w3.from_wei(balance, 'ether')
     
     def allowance(self, owner=None, spender=None):
         if owner is None:

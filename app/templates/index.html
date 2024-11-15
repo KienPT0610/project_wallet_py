@@ -1,40 +1,289 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 Wallet</title>
-    <link rel="stylesheet" href="styles.css">  <!-- Link tới tệp CSS nếu có -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+    <script type="text/javascript">
+        window.tailwind.config = {
+            darkMode: ['class'],
+            theme: {
+                extend: {
+                    colors: {
+                        border: 'hsl(var(--border))',
+                        input: 'hsl(var(--input))',
+                        ring: 'hsl(var(--ring))',
+                        background: 'hsl(var(--background))',
+                        foreground: 'hsl(var(--foreground))',
+                        primary: {
+                            DEFAULT: 'hsl(var(--primary))',
+                            foreground: 'hsl(var(--primary-foreground))'
+                        },
+                        secondary: {
+                            DEFAULT: 'hsl(var(--secondary))',
+                            foreground: 'hsl(var(--secondary-foreground))'
+                        },
+                        destructive: {
+                            DEFAULT: 'hsl(var(--destructive))',
+                            foreground: 'hsl(var(--destructive-foreground))'
+                        },
+                        muted: {
+                            DEFAULT: 'hsl(var(--muted))',
+                            foreground: 'hsl(var(--muted-foreground))'
+                        },
+                        accent: {
+                            DEFAULT: 'hsl(var(--accent))',
+                            foreground: 'hsl(var(--accent-foreground))'
+                        },
+                        popover: {
+                            DEFAULT: 'hsl(var(--popover))',
+                            foreground: 'hsl(var(--popover-foreground))'
+                        },
+                        card: {
+                            DEFAULT: 'hsl(var(--card))',
+                            foreground: 'hsl(var(--card-foreground))'
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+				:root {
+					--background: 0 0% 100%;
+--foreground: 240 10% 3.9%;
+--card: 0 0% 100%;
+--card-foreground: 240 10% 3.9%;
+--popover: 0 0% 100%;
+--popover-foreground: 240 10% 3.9%;
+--primary: 240 5.9% 10%;
+--primary-foreground: 0 0% 98%;
+--secondary: 240 4.8% 95.9%;
+--secondary-foreground: 240 5.9% 10%;
+--muted: 240 4.8% 95.9%;
+--muted-foreground: 240 3.8% 46.1%;
+--accent: 240 4.8% 95.9%;
+--accent-foreground: 240 5.9% 10%;
+--destructive: 0 84.2% 60.2%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 5.9% 90%;
+--input: 240 5.9% 90%;
+--ring: 240 5.9% 10%;
+--radius: 0.5rem;
+				}
+				.dark {
+					--background: 240 10% 3.9%;
+--foreground: 0 0% 98%;
+--card: 240 10% 3.9%;
+--card-foreground: 0 0% 98%;
+--popover: 240 10% 3.9%;
+--popover-foreground: 0 0% 98%;
+--primary: 0 0% 98%;
+--primary-foreground: 240 5.9% 10%;
+--secondary: 240 3.7% 15.9%;
+--secondary-foreground: 0 0% 98%;
+--muted: 240 3.7% 15.9%;
+--muted-foreground: 240 5% 64.9%;
+--accent: 240 3.7% 15.9%;
+--accent-foreground: 0 0% 98%;
+--destructive: 0 62.8% 30.6%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 3.7% 15.9%;
+--input: 240 3.7% 15.9%;
+--ring: 240 4.9% 83.9%;
+				}
+			}
+		</style>
 </head>
-<body>
-    <div class="container">
-        <h1>Welcome to Your Web3 Wallet</h1>
-        
-        <!-- Form để tạo ví mới -->
-        <div class="create-wallet">
-            <h2>Create a New Wallet</h2>
-            <form action="/create_wallet" method="POST">
-                <button type="submit">Create Wallet</button>
-            </form>
+
+<body class="pl-40 pr-40 pt-10">
+    <div class="p-4">
+        <div class="flex justify-between mb-4">
+            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg"></div>
+            <!-- <h1 class="ml-2 text-xl font-bold">Wallet Manager</h1> -->
+            <div class="flex items-center justify-center border text-2xl p-2 rounded-lg"><i class="fa fa-cog"></i></div>
         </div>
 
-        <!-- Form để đăng nhập vào ví đã có -->
-        <div class="login-wallet">
-            <h2>Login to Your Wallet</h2>
-            <form action="/login_wallet" method="POST">                
-                <label for="private_key">Private Key:</label>
-                <input type="password" id="private_key" name="private_key" required>
-                
-                <button type="submit">Login</button>
-            </form>
+
+        <div class="flex flex-col items-center justify-center bg-green-300 p-20 rounded-lg mb-4">
+            <div id="createModel" class="flex flex-col items-center hidden">
+                <button id="createWalletBtn"
+                    class="bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2 p-2 rounded">
+                    <i class="fa-solid fa-key"></i>
+                    Create wallet with Passkey
+                </button>
+                <div class="flex">
+                    If you have account already,
+                    <div id="showLoginBtn" class="ml-2 text-blue-900 font-bold" style="cursor: pointer;">login account!
+                    </div>
+                </div>
+            </div>
+
+            <div id="loginModel" class="flex flex-col items-center">
+                <button id="loginWalletWithPrivateKeyBtn"
+                    class="bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-2 p-2 rounded">
+                    <i class="fa-solid fa-key"></i>
+                    Login with Private Key
+                </button>
+                <div class="flex">
+                    If you haven't already,
+                    <div id="showCreateBtn" class="ml-2 text-blue-900 font-bold" style="cursor: pointer;">create
+                        account!</div>
+                </div>
+            </div>
+
+            {% if error %}
+            <span class="text-red-500">{{ error }}</span>
+            {% endif %}
         </div>
 
-        <!-- Hiển thị các thông báo (ví dụ: thành công, lỗi) -->
-        <div id="flash-messages">
-            <!-- Các thông báo sẽ được thêm vào đây bằng JavaScript hoặc Flask -->
+        <div class="mb-4">
+            <h2 class="font-semibold">Addresses</h2>
+            <div class="flex items-center mb-2">
+                <div class="flex justify-center w-40 space-x-2 p-2 h-10 bg-black text-white">
+                    <img src="https://www.gmgn.app/logos/evm.svg" alt="">
+                    <span class="mr-2 w-20">EVM</span>
+                </div>
+                <input type="text" class="p-2 flex-grow" value="---------------" readonly>
+                <button class="ml-2 bg-zinc-200 p-2 rounded">📋</button>
+            </div>
+            <div class="flex items-center">
+                <div class="flex justify-center w-40 space-x-2 p-2 h-10 bg-black text-white">
+                    <img src="https://www.gmgn.app/logos/polkadot.svg" alt="">
+                    <span class="mr-2 w-20">Polkadot</span>
+                </div>
+                <input type="text" class="border rounded p-2 flex-grow" value="---------------" readonly>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="font-semibold">Actions</h2>
+            <div class="flex space-x-2">
+                <button class="flex justify-center items-center space-x-2 bg-zinc-200 p-2 rounded" disabled>
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <p>Send</p>
+                </button>
+                <button class="flex justify-center items-center space-x-2 bg-zinc-200 p-2 rounded" disabled>
+                    <i class="fa-solid fa-circle-arrow-down"></i>
+                    <p>Receive</p>
+                </button>
+                <button class="flex justify-center items-center space-x-2 bg-zinc-200 p-2 rounded" disabled>
+                    <i class="fa-solid fa-bars"></i>
+                    <p>Transactions</p>
+                </button>
+                <button class="flex justify-center items-center space-x-2 bg-zinc-200 p-2 rounded" disabled>
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <p>Pay</p>
+                </button>
+            </div>
+        </div>
+
+        <div>
+            <button class="bg-zinc-200 p-2 rounded">Connect</button>
+            <button class="bg-zinc-200 p-2 rounded">Onboard</button>
+        </div>
+
+        <div class="">
+            <h2 class="text-2xl font-bold mb-4">FAQs</h2>
+            <div class="border-b border-muted mb-4">
+                <h3 class="text-lg font-semibold">Is GMGN wallet safe?</h3>
+            </div>
+            <div class="border-b border-muted mb-4">
+                <h3 class="text-lg font-semibold">I just created my wallet, what's next?</h3>
+                <p class="text-muted-foreground">
+                    At the moment, after creating your wallet, you have to click "Load" button to load your wallet.
+                    Every time you access the website after wallet creation, you also have to load your wallet. We are
+                    working on improving this process.
+                </p>
+            </div>
+            <div class="border-b border-muted mb-4">
+                <h3 class="text-lg font-semibold">Things are not loading automatically</h3>
+                <p class="text-muted-foreground">At the moment, every interaction requires you to click a button to
+                    initiate. We are working on improving this process.</p>
+            </div>
+            <div class="border-b border-muted mb-4">
+                <h3 class="text-lg font-semibold">I can't create my wallet</h3>
+                <p class="text-muted-foreground">If you are having trouble creating your wallet, very likely that you
+                    have not set up Passkey in your device or your device doesn't support Passkey.</p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <nav class="flex space-x-4">
+                <button class="bg-zinc-200 p-2 rounded">Home</button>
+                <button class="bg-zinc-200 p-2 rounded">Trade</button>
+                <button class="bg-zinc-200 p-2 rounded">Earn</button>
+                <button class="bg-zinc-200 p-2 rounded">DApps</button>
+            </nav>
         </div>
     </div>
 
-    <script src="scripts.js"></script>  <!-- Link tới tệp JavaScript nếu có -->
+    <div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white flex flex-col space-y-2 p-4 rounded">
+            <h2 class="text-lg font-bold">Create</h2>
+            <span>Enter any username to create a wallet</span>
+            <input type="text" id="walletNameInput" class="border rounded p-2 mb-2" placeholder="joihsmith">
+            <input type="password" id="walletPasswordInput" class="border rounded p-2 mb-2" placeholder="Passkey">
+            <div class="flex justify-end">
+                <button id="submitWalletName" class="bg-blue-500 text-white p-2 rounded">Create</button>
+                <button id="closeModal" class="bg-red-500 text-white p-2 rounded ml-2">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="walletPrivateKeyModal"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white flex flex-col space-y-2 p-4 rounded">
+            <h2 class="text-lg font-bold">Login</h2>
+            <span>Enter private key to login</span>
+            <form action="/login_account" method="post">
+                <input type="password" name="private_key" class="border rounded p-2 mb-2" placeholder="Privatekey..."
+                    required>
+                <div class="flex justify-end">
+                    <button id="loginWalletWithPrivateKey" class="bg-blue-500 text-white p-2 rounded"
+                        type="submit">Login</button>
+                    <button id="closeWalletPrivateKeyModal"
+                        class="bg-red-500 text-white p-2 rounded ml-2">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const loginWalletWithPrivateKeyBtn = document.getElementById('loginWalletWithPrivateKeyBtn');
+        const walletPrivateKeyModal = document.getElementById('walletPrivateKeyModal');
+        const closeWalletPrivateKeyModal = document.getElementById('closeWalletPrivateKeyModal');
+
+        loginWalletWithPrivateKeyBtn.addEventListener('click', () => {
+            walletPrivateKeyModal.classList.remove('hidden');
+        });
+
+        closeWalletPrivateKeyModal.addEventListener('click', () => {
+            walletPrivateKeyModal.classList.add('hidden');
+        });
+
+    </script>
+
+    <script>
+        const showCreateBtn = document.getElementById('showCreateBtn');
+        const createModel = document.getElementById('createModel');
+        const loginModel = document.getElementById('loginModel');
+
+        showCreateBtn.addEventListener('click', () => {
+            createModel.classList.remove('hidden');
+            loginModel.classList.add('hidden');
+        });
+
+        const showLoginBtn = document.getElementById('showLoginBtn');
+        showLoginBtn.addEventListener('click', () => {
+            loginModel.classList.remove('hidden');
+            createModel.classList.add('hidden');
+        });
+
+    </script>
 </body>
+
 </html>
