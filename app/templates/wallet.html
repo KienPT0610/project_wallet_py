@@ -104,7 +104,14 @@
     <div class="p-4">
         <div class="flex justify-between mb-4">
             <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg"></div>
-            <div class="flex items-center justify-center border text-2xl p-2 rounded-lg"><i class="fa fa-cog"></i></div>
+            <button id="logoutButton" class="flex items-center justify-center border text-2xl p-2 rounded-lg">
+                LOGOUT
+            </button>
+            <script>
+                document.getElementById('logoutButton').addEventListener('click', function() {
+                    window.location.href = '/logout';
+                });
+            </script>
         </div>
 
         <div
@@ -113,7 +120,7 @@
                 <div
                     class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white">
                 </div>
-                <span class="ml-2 text-black"> name </span>
+                <span class="ml-2 text-black"> {{ account.name }} </span>
                 <span class="ml-1 text-zinc-600"><i class="fa fa-pen"></i></span>
             </div>
             <button class="absolute bottom-4 right-4 bg-black text-white px-4 py-2 rounded-lg hover:bg-zinc-800">
