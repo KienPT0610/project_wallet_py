@@ -11,11 +11,13 @@ def create_app():
     app.add_url_rule('/account/<address>', 'account', account)
     app.add_url_rule('/send', 'send', send)
     app.add_url_rule('/receive', 'receive', receive)
+    app.add_url_rule('/forgot_password', 'forgot-password', forgot_password)
     # app.add_url_rule('/logout', 'logout', logout)
 
     app.add_url_rule('/get_account_address', 'get-account-address', get_account_address)
     app.add_url_rule('/transactions', 'transactions', transactions)
 
     app.add_url_rule('/send_token', 'send-token', send_token, methods=['POST'])
+    app.add_url_rule('/get-password', 'get-password', get_password, methods=['POST'])
 
     return app

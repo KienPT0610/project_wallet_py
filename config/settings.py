@@ -1,5 +1,45 @@
 API_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/"
 CONTRACT_ADDRESS = "0x20492C8255b075F73906b2849118dB1A2C4b3f01"
+CONTRACT_USERS_ADDRESS = "0xeF320f6708e3547Ce201098b302e7C7B49B92199"
+CONTRACT_USERS_ABI = [
+  {
+    "inputs": [
+      { "internalType": "string", "name": "username", "type": "string" },
+      { "internalType": "string", "name": "password", "type": "string" },
+      { "internalType": "string", "name": "private_key", "type": "string" }
+    ],
+    "name": "create_user",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "username", "type": "string" },
+      { "internalType": "string", "name": "password", "type": "string" }
+    ],
+    "name": "forgot_password",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "private_key", "type": "string" }
+    ],
+    "name": "get_user_name",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "name": "isCreated",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
 CONTRACT_ABI = [
     { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
     {
