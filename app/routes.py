@@ -34,6 +34,7 @@ def login_account():
     return redirect(url_for('account', address=wallet.account.address))
 
 def account(address):
+    wallet.load_wallet()
     account = wallet.account
     return render_template('wallet.html', account=account)
 
@@ -51,6 +52,36 @@ def send():
 def receive():
     wallet.load_wallet()
     return render_template('receive.html', account=wallet.account)
+
+def request_fuc():
+    wallet.load_wallet()
+    request_transactions = wallet.token.get_requests()
+    approve_request_transactions = wallet.token.get_approved_requests()
+    create_request_transactions = wallet.token.get_created_requests()
+    print(request_transactions)
+    return render_template('request.html', 
+        request_transactions=request_transactions, 
+        approve_request_transactions=approve_request_transactions, 
+        create_request_transactions=create_request_transactions, account=wallet.account
+    )
+
+def create_request():
+    to = request.form.get('to')
+    amount = request.form.get('amount')
+    tx = wallet.token.create_request(to, amount)
+    wallet.account.sign_transaction(tx)
+    wallet.load_wallet()
+    return redirect(url_for('request'))
+
+def approve():
+    request_id = request.form.get('request_id')
+    try:
+        tx = wallet.token.approve_request(int(request_id))
+        wallet.account.sign_transaction(tx)
+        wallet.load_wallet()
+        return redirect(url_for('request'))
+    except Exception as error:
+        return "Error: " + str(error)
 
 def transactions():
     send_transactions = wallet.token.get_send_transactions()
