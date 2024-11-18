@@ -29,9 +29,11 @@ def get_account_address():
         return jsonify({"error": str(error)})
 
 def send():
+    wallet.load_wallet()
     return render_template('send.html', account=wallet.account)
 
 def receive():
+    wallet.load_wallet()
     return render_template('receive.html', account=wallet.account)
 
 def transactions():

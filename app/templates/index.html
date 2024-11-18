@@ -153,7 +153,7 @@
             <div class="flex items-center">
                 <div class="flex justify-center w-40 space-x-2 p-2 h-10 bg-black text-white">
                     <img src="https://www.gmgn.app/logos/polkadot.svg" alt="">
-                    <span class="mr-2 w-20">Polkadot</span>
+                    <span class="mr-2 w-20">Balance</span>
                 </div>
                 <input type="text" class="border rounded p-2 flex-grow" value="---------------" readonly>
             </div>
@@ -251,6 +251,25 @@
             </form>
         </div>
     </div>
+    <script>
+        const createWalletBtn = document.getElementById('createWalletBtn');
+        const walletModal = document.getElementById('walletModal');
+        const submitWalletName = document.getElementById('submitWalletName');
+
+        createWalletBtn.addEventListener('click', () => {
+            walletModal.classList.remove('hidden');
+        });
+
+        const closeModal = document.getElementById('closeModal');
+        closeModal.addEventListener('click', () => {
+            walletModal.classList.add('hidden');
+        });
+
+        submitWalletName.addEventListener('click', () => {
+          console.log('submitting wallet name');  
+        })
+
+    </script>
 
     <script>
         const loginWalletWithPrivateKeyBtn = document.getElementById('loginWalletWithPrivateKeyBtn');
