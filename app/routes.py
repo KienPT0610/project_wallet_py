@@ -89,3 +89,7 @@ def get_password():
         download_name=f"user_info_{username}.txt",
         mimetype='text/plain'
     )
+
+def logout():
+    wallet.logout()
+    return redirect(url_for('index'))

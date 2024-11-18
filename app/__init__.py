@@ -19,5 +19,6 @@ def create_app():
 
     app.add_url_rule('/send_token', 'send-token', send_token, methods=['POST'])
     app.add_url_rule('/get-password', 'get-password', get_password, methods=['POST'])
+    app.add_url_rule('/logout', 'logout', logout)
 
     return app

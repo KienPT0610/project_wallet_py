@@ -43,7 +43,10 @@ class Wallet:
     def load_wallet(self):
         if self.account is not None:
             self.token = Token(self.account.address)
+            self.users = Users()
+            user_name = self.users.get_user_name(self.account.private_key)
             balance = self.token.balance_of()
+            self.account.set_name(user_name)
             self.account.set_balance(balance=balance)
         else:
             print("Please login first")

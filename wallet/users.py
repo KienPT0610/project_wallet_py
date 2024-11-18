@@ -8,7 +8,7 @@ class Users:
         self.w3 = self.provider.get_web3()
         self.contract = self.w3.eth.contract(address=CONTRACT_USERS_ADDRESS, abi=CONTRACT_USERS_ABI)
 
-    @property
+
     def get_user_name(self, private_key=None):
         return self.contract.functions.get_user_name(private_key).call()
     
