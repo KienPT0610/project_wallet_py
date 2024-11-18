@@ -134,6 +134,10 @@
                         account!</div>
                 </div>
             </div>
+            <div class="flex">
+                Forgot
+                <a href="/forgot_password" id="showCreateBtn" class="ml-2 text-red-900 font-bold" style="cursor: pointer;">private key?</a>
+            </div>
 
             {% if error %}
             <span class="text-red-500">{{ error }}</span>
@@ -224,13 +228,18 @@
     <div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white flex flex-col space-y-2 p-4 rounded">
             <h2 class="text-lg font-bold">Create</h2>
-            <span>Enter any username to create a wallet</span>
-            <input type="text" id="walletNameInput" class="border rounded p-2 mb-2" placeholder="joihsmith">
-            <input type="password" id="walletPasswordInput" class="border rounded p-2 mb-2" placeholder="Passkey">
-            <div class="flex justify-end">
-                <button id="submitWalletName" class="bg-blue-500 text-white p-2 rounded">Create</button>
-                <button id="closeModal" class="bg-red-500 text-white p-2 rounded ml-2">Cancel</button>
-            </div>
+            <span>Enter any username and pass to create a wallet</span>
+            <form action="/create_account" method="post">
+                <input type="text" id="walletNameInput" name="username" class="border rounded p-2 mb-2"
+                    placeholder="joihsmith">
+                <input type="password" id="walletPasswordInput" name="password" class="border rounded p-2 mb-2"
+                    placeholder="Passkey">
+                <div class="flex justify-end">
+                    <button id="submitWalletName" type="submit"
+                        class="bg-blue-500 text-white p-2 rounded">Create</button>
+                    <button id="closeModal" class="bg-red-500 text-white p-2 rounded ml-2">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -266,7 +275,7 @@
         });
 
         submitWalletName.addEventListener('click', () => {
-          console.log('submitting wallet name');  
+            console.log('submitting wallet name');
         })
 
     </script>
