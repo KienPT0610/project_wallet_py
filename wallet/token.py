@@ -50,6 +50,22 @@ class Token:
         amount_wei = self.w3.to_wei(amount, 'ether')
         tx = self.contract.functions.sendToken(to, amount_wei, memo).build_transaction(self.provider.transaction_config(self.default_account))
         return tx
-
     
+    def get_requests(self):
+        return self.contract.functions.getRequests(self.default_account).call() 
+    
+    def get_approved_requests(self):
+        return self.contract.functions.getAcceptedRequests(self.default_account).call()
+    
+    def get_created_requests(self):
+        return self.contract.functions.getCreateRequests(self.default_account).call()
+
+    def approve_request(self, request_id: int):
+        tx = self.contract.functions.acceptRequest(request_id).build_transaction(self.provider.transaction_config(self.default_account))
+        return tx    
+    
+    def create_request(self, to, amount):
+        amount_wei = self.w3.to_wei(amount, 'ether')
+        tx = self.contract.functions.createRequest(to, amount_wei).build_transaction(self.provider.transaction_config(self.default_account))
+        return tx
 

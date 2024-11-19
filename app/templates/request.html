@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Request</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 20px;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table-container {
+            margin-bottom: 40px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="flex justify-between items-center mb-6">
+            <div class="flex space-x-4">
+                <button class="text-gray-600" onclick="window.history.back()">
+                    <i class="fa fa-arrow-left"></i> Go back
+                </button>
+            </div>
+        </header>
+        <h2 class="text-center mb-4">Transaction Request</h2>
+        <!-- Buttons to toggle between Send and Receive transactions -->
+        <div class="text-center mb-4">
+            <button class="btn btn-primary" onclick="showRequest()">Request</button>
+            <button class="btn btn-secondary" onclick="showApproveRequest()">Request is approve</button>
+            <button class="btn btn-primary" onclick="showCreateRequest()">Request is created</button>        
+        </div>
+
+        <!-- Send Transactions Section (visible by default) -->
+        <div id="request" class="table-container">
+            <h3>Request</h3>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>From</th>
+                        <th>Amount (Wei)</th>
+                        <th>Amount (ETH)</th>
+                        <th>Approve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in request_transactions %}
+                    {% if transaction[2] != "0x0000000000000000000000000000000000000000" %}
+                    <tr>
+                        <td>{{ transaction[0] }}</td> <!-- ID -->
+                        <td>{{ transaction[1] }}</td> <!-- From -->
+                        <td>{{ transaction[3] }} Wei</td>
+                        <td>{{ transaction[3] / 10**18 }} ETH</td>
+                        <td>
+                            <form method="post" action="/approve">
+                                <input class="hidden" type="number" name="request_id" value="{{ transaction[0] }}">
+                                <button type="submit" class="btn btn-primary">Approve</button>
+                            </form>
+                        </td> <!-- Memo -->
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Receive Transactions Section (hidden by default) -->
+        <div id="approveRequest" class="table-container hidden">
+            <h3>Approve Request</h3>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>From</th>
+                        <th>Amount (Wei)</th>
+                        <th>Amount (ETH)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in approve_request_transactions %}
+                    <tr>
+                        <td>{{ transaction[0] }}</td> <!-- ID -->
+                        <td>{{ transaction[1] }}</td> <!-- From -->
+                        <td>{{ transaction[3] }} Wei</td>
+                        <td>{{ transaction[3] / 10**18 }} ETH</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="createRequest" class="table-container hidden">
+            <h3>Create Request</h3>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount (Wei)</th>
+                        <th>Amount (ETH)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in create_request_transactions %}
+                    <tr>
+                        <td>{{ transaction[0] }}</td> <!-- ID -->
+                        <td>{{ transaction[1] }}</td> <!-- From -->
+                        <td>{{ transaction[2] }}</td> <!-- To -->
+                        <td>{{ transaction[3] }} Wei</td>
+                        <td>{{ transaction[3] / 10**18 }} ETH</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Function to show send transactions
+        function showRequest() {
+            document.getElementById('request').classList.remove('hidden');
+            document.getElementById('approveRequest').classList.add('hidden');
+            document.getElementById('createRequest').classList.add('hidden');
+        }
+
+        // Function to show receive transactions
+        function showApproveRequest() {
+            document.getElementById('request').classList.add('hidden');
+            document.getElementById('approveRequest').classList.remove('hidden');
+            document.getElementById('createRequest').classList.add('hidden');
+        }
+
+        function showCreateRequest() {
+            document.getElementById('request').classList.add('hidden');
+            document.getElementById('approveRequest').classList.add('hidden');
+            document.getElementById('createRequest').classList.remove('hidden');
+        }
+
+        // Set default view to send transactions
+        window.onload = function () {
+            showRequest();
+        }
+    </script>
+</body>
+
+</html>
