@@ -5,5 +5,23 @@ def create_app():
     app = Flask(__name__)
 
     app.add_url_rule('/', 'index', index)
+    app.add_url_rule('/create_account', 'create-account', create_account, methods=['POST'])
+    app.add_url_rule('/login_account', 'login-account', login_account, methods=['POST'])
+    
+    app.add_url_rule('/account/<address>', 'account', account)
+    app.add_url_rule('/send', 'send', send)
+    app.add_url_rule('/receive', 'receive', receive)
+    app.add_url_rule('/request', 'request', request_fuc)
+    app.add_url_rule('/forgot_password', 'forgot-password', forgot_password)
+    # app.add_url_rule('/logout', 'logout', logout)
+
+    app.add_url_rule('/get_account_address', 'get-account-address', get_account_address)
+    app.add_url_rule('/transactions', 'transactions', transactions)
+
+    app.add_url_rule('/send_token', 'send-token', send_token, methods=['POST'])
+    app.add_url_rule('/get-password', 'get-password', get_password, methods=['POST'])
+    app.add_url_rule('/approve', 'approve', approve, methods=['POST'])
+    app.add_url_rule('/create_request', 'create-request', create_request, methods=['POST'])
+    app.add_url_rule('/logout', 'logout', logout)
 
     return app

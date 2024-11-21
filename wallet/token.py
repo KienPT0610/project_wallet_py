@@ -5,7 +5,8 @@ from config.settings import API_URL, CONTRACT_ABI, CONTRACT_ADDRESS
 
 class Token:
     def __init__(self, default_account):
-        self.w3 = Provider(API_URL).get_web3()
+        self.provider = Provider(API_URL)
+        self.w3 = self.provider.get_web3()
         self.address = CONTRACT_ADDRESS
         self.default_account = default_account
         self.contract = self.w3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)
@@ -29,7 +30,8 @@ class Token:
     def balance_of(self, account=None):
         if account is None:
             account = self.default_account
-        return self.contract.functions.balanceOf(account).call()
+        balance = self.contract.functions.balanceOf(account).call()
+        return self.w3.from_wei(balance, 'ether')
     
     def allowance(self, owner=None, spender=None):
         if owner is None:
@@ -38,14 +40,32 @@ class Token:
             spender = self.address
         return self.contract.functions.allowance(owner, spender).call()
     
-    def get_send_transaction(self, owner=None):
-        if owner is None:
-            owner = self.address
-        return self.contract.functions.getSendTransactions(owner).call()
+    def get_send_transactions(self):
+        return self.contract.functions.getSendTransactions(self.default_account).call()
     
-    def get_receive_transaction(self, owner=None):
-        if owner is None:
-            owner = self.address
-        return self.contract.functions.getReceiveTransactions(owner).call()
+    def get_receive_transactions(self):
+        return self.contract.functions.getReceiveTransactions(self.default_account).call()
     
+    def create_transaction_send_token(self, to, amount, memo):
+        amount_wei = self.w3.to_wei(amount, 'ether')
+        tx = self.contract.functions.sendToken(to, amount_wei, memo).build_transaction(self.provider.transaction_config(self.default_account))
+        return tx
+    
+    def get_requests(self):
+        return self.contract.functions.getRequests(self.default_account).call() 
+    
+    def get_approved_requests(self):
+        return self.contract.functions.getAcceptedRequests(self.default_account).call()
+    
+    def get_created_requests(self):
+        return self.contract.functions.getCreateRequests(self.default_account).call()
+
+    def approve_request(self, request_id: int):
+        tx = self.contract.functions.acceptRequest(request_id).build_transaction(self.provider.transaction_config(self.default_account))
+        return tx    
+    
+    def create_request(self, to, amount):
+        amount_wei = self.w3.to_wei(amount, 'ether')
+        tx = self.contract.functions.createRequest(to, amount_wei).build_transaction(self.provider.transaction_config(self.default_account))
+        return tx
 

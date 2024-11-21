@@ -19,3 +19,12 @@ class Provider:
     def get_account(self, private_key):
         # Lấy tài khoản từ private key
         return self.w3.eth.account.from_key(private_key)
+    
+    def transaction_config(self, address):
+        # Cấu hình giao dịch
+        return {
+            'chainId': 97,
+            'gas': 2000000,
+            'gasPrice': self.w3.to_wei('5', 'gwei'),
+            'nonce': self.w3.eth.get_transaction_count(address)
+        }
